@@ -2,12 +2,7 @@
 
 namespace App\Http\Error;
 
-class WrongJson
+class WrongJson extends JsonError
 {
-    public const WRONG_JSON = 'Wrong json';
-
-    public static function JsonMessage()
-    {
-        return json_encode(static::WRONG_JSON);
-    }
+    protected $error = 'Data is not JSON';
 }
