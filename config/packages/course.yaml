@@ -1,0 +1,3 @@
+parameters:
+  courses:
+    App\Courses\BasePhp: 1
