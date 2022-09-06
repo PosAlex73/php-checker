@@ -2,12 +2,8 @@
 
 namespace App\Courses;
 
-use PHPUnit\Framework\TestCase;
-
-class BasePhp extends TestCase
+class BasePhp extends Course
 {
-    protected $course_id = 1;
-
     public function checkAdd($code)
     {
 

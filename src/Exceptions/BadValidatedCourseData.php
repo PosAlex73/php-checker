@@ -2,7 +2,9 @@
 
 namespace App\Exceptions;
 
-class BadValidatedCourseData
-{
+use Exception;
 
+class BadValidatedCourseData extends Exception
+{
+    protected $message = 'Invalid course data';
 }
