@@ -13,10 +13,13 @@ class PracticeCheckerForm
         $this->course_id = $data['course_id'];
         $this->task_id = $data['task_id'];
         $this->code = $data['code'];
+        $this->sanitazeUserData();
     }
 
     protected function sanitazeUserData()
     {
 
     }
+
+
 }
