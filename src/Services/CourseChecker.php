@@ -3,14 +3,20 @@
 namespace App\Services;
 
 use App\Http\Error\CodeError;
+use App\Utils\DD;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Uid\Ulid;
+use function PHPUnit\Framework\assertEquals;
+use function PHPUnit\Framework\assertTrue;
 
 class CourseChecker
 {
     protected Filesystem $filesystem;
     protected string $project_dir;
+    protected string $full_file_name;
+    protected string $file_name;
+    protected string $file_start_string = "<?php \n";
 
     protected const PHP_COURSE_DIR = 'php-course';
 
@@ -22,19 +28,24 @@ class CourseChecker
 
     public function createTaskFile(string $code)
     {
-        $file_name = $this->project_dir . static::PHP_COURSE_DIR . Ulid::generate();
+        $this->file_name = static::PHP_COURSE_DIR . '-' . Ulid::generate() . '.php';
+        $this->full_file_name = $this->project_dir . $this->file_name;
 
         try {
-            $this->filesystem->touch($file_name);
+            $this->filesystem->touch($this->full_file_name);
         } catch (\Throwable $e) {
             return new CodeError();
         }
 
-        return $file_name;
+        $content = $this->file_start_string . $code;
+        file_put_contents($this->full_file_name, $content);
     }
 
     public function checkTask()
     {
-
+        $docker_command = "docker run --rm --name php-run -v {$this->project_dir}:/usr/src/myapp -w /usr/src/myapp php:7.4-cli php {$this->file_name}";
+        exec($docker_command, $result);
+        $this->filesystem->remove($this->full_file_name);
+        DD::dd($result);
     }
 }
