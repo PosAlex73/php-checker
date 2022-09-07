@@ -2,7 +2,7 @@
 
 namespace App\Http\Error;
 
-class WrongJson extends JsonError
+class Wrong extends Error
 {
     protected $error = 'Data is not JSON';
 }

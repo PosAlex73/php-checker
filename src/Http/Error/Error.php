@@ -2,7 +2,7 @@
 
 namespace App\Http\Error;
 
-abstract class JsonError
+abstract class Error
 {
     protected $error = 'Wrong json';
     protected $error_code = 500;

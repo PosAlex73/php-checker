@@ -3,7 +3,7 @@
 namespace App\Form;
 
 use App\Exceptions\BadValidatedCourseData;
-use App\Http\Error\WrongJson;
+use App\Http\Error\Wrong;
 use App\Utils\DD;
 use PHPUnit\Util\Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;

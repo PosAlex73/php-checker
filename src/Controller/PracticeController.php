@@ -6,6 +6,7 @@ use App\Courses\Course;
 use App\Courses\CourseFactory;
 use App\Form\PracticeCheckerForm;
 use App\Http\Error\WrongData;
+use App\Services\CourseChecker;
 use App\Utils\DD;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,7 +19,8 @@ class PracticeController extends AbstractController
     public function practiceCheck(
         Request $request,
         PracticeCheckerForm $checkerForm,
-        CourseFactory $courseFactory
+        CourseFactory $courseFactory,
+        CourseChecker $checker
     ): Response
     {
         $content = json_decode($request->getContent(), JSON_OBJECT_AS_ARRAY);
@@ -26,8 +28,9 @@ class PracticeController extends AbstractController
         try {
             $validated_data = $checkerForm->preperaCourseData($content);
             $course = $courseFactory->createCourseFromArray(...$validated_data);
+            $checker->createTaskFile($course->getCode());
 
-
+            $result = $checker->checkTask();
 
         } catch (\Exception $e) {
             return $this->json((new WrongData())->getErrorMessage());

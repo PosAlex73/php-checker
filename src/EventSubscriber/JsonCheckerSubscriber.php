@@ -2,7 +2,7 @@
 
 namespace App\EventSubscriber;
 
-use App\Http\Error\WrongJson;
+use App\Http\Error\Wrong;
 use App\Utils\DD;
 use http\Env\Response;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -15,7 +15,7 @@ class JsonCheckerSubscriber implements EventSubscriberInterface
     public function onKernelRequest(RequestEvent $event): void
     {
         if ($event->getRequest()->getContentType() !== 'json') {
-            $jsonError = new WrongJson();
+            $jsonError = new Wrong();
             $response = new JsonResponse($jsonError->getErrorMessage(), $jsonError->getCode());
 
             $event->setResponse($response);
