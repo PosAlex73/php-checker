@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Courses\Course;
+use App\Http\CourseResponse;
 use App\Http\Error\CodeError;
 use App\Services\DockerBuilder\Arguments\ContainerName;
 use App\Services\DockerBuilder\Arguments\ReadOnlyArg;
@@ -59,7 +60,7 @@ class CourseChecker
         file_put_contents($this->full_file_name, $content);
     }
 
-    public function getTaskResult(string $container_type)
+    public function getTaskResult(string $container_type): CourseResponse
     {
         $this->dockerBuilder->setArguments(
             $container_type,
@@ -79,6 +80,10 @@ class CourseChecker
         exec($docker_command, $result);
         $this->filesystem->remove($this->full_file_name);
 
-        DD::dd($result);
+        if (empty($result)) {
+            return new CourseResponse('Task done', serialize($result), CourseResponse::SUCCESS);
+        } else {
+            return new CourseResponse('Task failed', serialize($result), CourseResponse::ERROR);
+        }
     }
 }

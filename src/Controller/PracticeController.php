@@ -34,8 +34,9 @@ class PracticeController extends AbstractController
             );
 
             $checker->createTaskFile($course);
-            $checker->getTaskResult($validated_data['type']);
+            $result = $checker->getTaskResult($validated_data['type']);
 
+            return $this->json($result->toArray());
 
         } catch (\Exception $e) {
             return $this->json((new WrongData())->getErrorMessage());
