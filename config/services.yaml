@@ -10,6 +10,8 @@ parameters:
     login: test
     password: test
 
+    docker_container_directory: 'usr/src/myapp'
+
 
 services:
     # default configuration for services in *this* file
