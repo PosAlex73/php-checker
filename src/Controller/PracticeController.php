@@ -27,10 +27,16 @@ class PracticeController extends AbstractController
 
         try {
             $validated_data = $checkerForm->preperaCourseData($content);
-            $course = $courseFactory->createCourseFromArray(...$validated_data);
+
+            $course = $courseFactory->createCourseFromArray(
+                $validated_data['course_id'],
+                $validated_data['task_id'],
+                $validated_data['code']
+            );
+
             $checker->createTaskFile($course->getCode());
 
-            $result = $checker->checkTask();
+            $result = $checker->checkTask($validated_data['type']);
 
         } catch (\Exception $e) {
             return $this->json((new WrongData())->getErrorMessage());

@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Http\Error\CodeError;
 use App\Services\DockerBuilder\Arguments\ContainerName;
+use App\Services\DockerBuilder\Arguments\File;
 use App\Services\DockerBuilder\Arguments\ReadOnlyArg;
 use App\Services\DockerBuilder\Arguments\Rm;
 use App\Services\DockerBuilder\Arguments\User;
@@ -55,9 +56,11 @@ class CourseChecker
         file_put_contents($this->full_file_name, $content);
     }
 
-    public function checkTask()
+    public function checkTask(string $container_type)
     {
         $this->dockerBuilder->setArguments(
+            $container_type,
+            new File($this->file_name),
             new User('php_course'),
             new Rm(),
             new ReadOnlyArg(),

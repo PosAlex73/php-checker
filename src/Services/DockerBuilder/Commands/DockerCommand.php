@@ -4,7 +4,7 @@ namespace App\Services\DockerBuilder\Commands;
 
 use App\Services\DockerBuilder\Arguments\DockerArgument;
 
-class DockerCommand
+abstract class DockerCommand
 {
     protected array $arguments;
     protected string $docker_run = 'docker run ';
@@ -21,6 +21,6 @@ class DockerCommand
             $docker_arguments[] = $argument->ArgumentToString();
         }
 
-        return $this->docker_run . join(' ', $docker_arguments);
+        return $this->docker_run . ' ' . join(' ', $docker_arguments);
     }
 }
