@@ -10,7 +10,8 @@ parameters:
     login: test
     password: test
 
-    docker_container_directory: 'usr/src/myapp'
+    docker_container_directory: '/usr/src/myapp'
+    task_dir: '%kernel.project_dir%/tasks/'
 
 
 services:

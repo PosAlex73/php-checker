@@ -7,11 +7,13 @@ use App\Services\DockerBuilder\Arguments\DockerArgument;
 abstract class DockerCommand
 {
     protected array $arguments;
+    protected string $file;
     protected string $docker_run = 'docker run ';
 
-    public function __construct(DockerArgument ...$arguments)
+    public function __construct(string $file, DockerArgument ...$arguments)
     {
         $this->arguments = $arguments;
+        $this->file = $file;
     }
 
     public function toString(): string
@@ -21,6 +23,6 @@ abstract class DockerCommand
             $docker_arguments[] = $argument->ArgumentToString();
         }
 
-        return $this->docker_run . ' ' . join(' ', $docker_arguments);
+        return $this->docker_run . ' ' . join(' ', $docker_arguments) . ' ' . $this->command . ' ' . $this->file;
     }
 }

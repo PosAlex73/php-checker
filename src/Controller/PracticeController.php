@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Courses\Course;
 use App\Courses\CourseFactory;
 use App\Form\PracticeCheckerForm;
 use App\Http\Error\WrongData;
@@ -34,9 +33,9 @@ class PracticeController extends AbstractController
                 $validated_data['code']
             );
 
-            $checker->createTaskFile($course->getCode());
+            $checker->createTaskFile($course);
+            $checker->getTaskResult($validated_data['type']);
 
-            $result = $checker->checkTask($validated_data['type']);
 
         } catch (\Exception $e) {
             return $this->json((new WrongData())->getErrorMessage());

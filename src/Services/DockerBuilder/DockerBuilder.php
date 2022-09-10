@@ -11,18 +11,20 @@ class DockerBuilder implements DockerBuilderInterface
 {
     protected array $arguments;
     protected string $container_type;
+    protected string $file;
 
-    public function setArguments(string $container_type, DockerArgument ...$arguments)
+    public function setArguments(string $container_type, string $file, DockerArgument ...$arguments)
     {
         $this->container_type = $container_type;
         $this->arguments = $arguments;
+        $this->file = $file;
     }
 
     public function getDockerCommand(): DockerCommand
     {
         $type = $this->getContainerType();
 
-        return new $type(...$this->arguments);
+        return new $type($this->file, ...$this->arguments);
     }
 
     protected function getContainerType(): string
