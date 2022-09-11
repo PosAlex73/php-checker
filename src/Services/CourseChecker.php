@@ -28,19 +28,19 @@ class CourseChecker
     protected string $file_name;
     protected string $uuid;
     protected string|array $result;
-    protected string $file_task_begin = 'task-';
-    protected string $task_dir;
     protected string $code_here = '%code_here%';
 
     protected const PHP_COURSE_DIR = 'php-course';
 
-    public function __construct(protected ParameterBagInterface $parameterBag, DockerBuilderInterface $dockerBuilder)
-    {
+    public function __construct(
+        protected ParameterBagInterface $parameterBag,
+        protected TaskLoaderInterface $taskLoader,
+        DockerBuilderInterface $dockerBuilder,
+    ){
         $this->filesystem = new Filesystem();
         $this->dockerBuilder = $dockerBuilder;
         $this->project_dir = $this->parameterBag->get('kernel.project_dir') . '/' . 'var/courses/';
         $this->volume_dir = $this->parameterBag->get('docker_container_directory');
-        $this->task_dir = $this->parameterBag->get('task_dir');
     }
 
     public function createTaskFile(Course $course)
@@ -55,7 +55,7 @@ class CourseChecker
             return new CodeError();
         }
 
-        $task_file_content = file_get_contents($this->task_dir . 'php' . '/' . $this->file_task_begin . $course->getTaskId() . '.php');
+        $task_file_content = $this->taskLoader->getTaskFileContent($course->getTaskId());
         $content = str_replace($this->code_here, $course->getCode(), $task_file_content);
         file_put_contents($this->full_file_name, $content);
     }

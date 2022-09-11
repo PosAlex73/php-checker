@@ -6,9 +6,9 @@ security:
     providers:
         # used to reload user from session & other features (e.g. switch_user)
         app_user_provider:
-            entity:
-                class: App\Entity\User
-                property: email
+            memory:
+                users:
+                    course: { password: $2y$13$i00Wy/y/ImPzrHdu1.Q8I.jY/QF4GX.PhQ4uZH8kwqWXE7cxDIDTO, roles: ['ROLE_USER'] }
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -16,6 +16,9 @@ security:
         main:
             lazy: true
             provider: app_user_provider
+            stateless: true
+            http_basic:
+                realm: Secured Area
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
@@ -26,8 +29,7 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+         - { path: ^/, roles: ROLE_USER }
 
 when@test:
     security:
