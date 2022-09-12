@@ -48,13 +48,12 @@ class CourseChecker
         $this->uuid = Ulid::generate();
         $this->file_name = static::PHP_COURSE_DIR . '-' . $this->uuid . '.php';
         $this->full_file_name = $this->project_dir . $this->file_name;
-
         try {
             $this->filesystem->touch($this->full_file_name);
         } catch (\Throwable $e) {
+            DD::dd($e->getMessage());
             return new CodeError();
         }
-
         $task_file_content = $this->taskLoader->getTaskFileContent($course->getTaskId());
         $content = str_replace($this->code_here, $course->getCode(), $task_file_content);
         file_put_contents($this->full_file_name, $content);
