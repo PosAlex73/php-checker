@@ -2,6 +2,7 @@
 
 namespace App\Courses;
 
+use PHPUnit\Util\Exception;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class CourseFactory
@@ -18,6 +19,10 @@ class CourseFactory
     public function createCourseFromArray(int $course_id, int $task_id, string $code)
     {
         $course = array_search($course_id, $this->courseCollection);
+
+        if (empty($course)) {
+            throw new Exception('Course is not exist!');
+        }
 
         /** @var Course $course */
         $course = new $course($course_id, $task_id, $code);
