@@ -8,7 +8,7 @@ security:
         app_user_provider:
             memory:
                 users:
-                    course: { password: $2y$13$i00Wy/y/ImPzrHdu1.Q8I.jY/QF4GX.PhQ4uZH8kwqWXE7cxDIDTO, roles: ['ROLE_USER'] }
+                    course: { password: $2y$13$Mexiczyi3UeVH.I5LXVvMuL4tPERw0b6bc.gt7vEAZt0lG8KulEwG, roles: ['ROLE_USER'] }
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
