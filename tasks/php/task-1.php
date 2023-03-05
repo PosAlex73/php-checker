@@ -1,5 +1,9 @@
 <?php
 
-require_once __DIR__ . '/../../vendor/autoload.php';
-throw new Exception();
 %code_here%
+
+if ($result === 123) {
+    exit;
+} else {
+    throw new \Exception();
+}
