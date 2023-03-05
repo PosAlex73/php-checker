@@ -1,9 +1,5 @@
 <?php
 
-require_once dirname(__DIR__).'/myapp/vendor/autoload.php';
-
+require_once __DIR__ . '/../../vendor/autoload.php';
+throw new Exception();
 %code_here%
-
-\PHPUnit\Framework\assertEquals(123, $result);
-\PHPUnit\Framework\assertTrue(is_int($result));
-

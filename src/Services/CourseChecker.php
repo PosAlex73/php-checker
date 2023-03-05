@@ -75,9 +75,9 @@ class CourseChecker
 
         $docker_command = $this->dockerBuilder->getDockerCommand();
         $docker_command = $docker_command->toString();
-
         exec($docker_command, $result);
         $this->filesystem->remove($this->full_file_name);
+        DD::sd($docker_command);
 
         if (empty($result)) {
             return new CourseResponse('Task done', serialize($result), CourseResponse::SUCCESS);
