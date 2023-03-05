@@ -12,7 +12,7 @@ parameters:
 
     docker_container_directory: '/usr/src/myapp'
     task_dir: '%kernel.project_dir%/tasks/'
-
+    check_source: "system"
 
 services:
     # default configuration for services in *this* file

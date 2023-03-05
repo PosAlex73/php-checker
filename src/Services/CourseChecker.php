@@ -61,6 +61,39 @@ class CourseChecker
 
     public function getTaskResult(string $container_type): CourseResponse
     {
+        $docker_command = $this->resolveCommand($container_type);
+
+
+
+        exec($docker_command, $result);
+
+
+        DD::sd($result);
+
+
+        $this->filesystem->remove($this->full_file_name);
+
+
+        if (empty($result)) {
+            return new CourseResponse('Task done', serialize($result), CourseResponse::SUCCESS);
+        } else {
+            return new CourseResponse('Task failed', serialize($result), CourseResponse::ERROR);
+        }
+    }
+
+    protected function resolveCommand(string $container_type)
+    {
+        $command_type = $this->parameterBag->get('check_source');
+
+        return match ($command_type) {
+            CommandBuildResolver::DOCKER => $this->getDockerCommand($container_type),
+            CommandBuildResolver::SYSTEM => $this->getSystemCommand($container_type),
+            default => $this->getSystemCommand($container_type)
+        };
+    }
+
+    protected function getDockerCommand(string $container_type): string
+    {
         $this->dockerBuilder->setArguments(
             $container_type,
             $this->file_name,
@@ -74,14 +107,11 @@ class CourseChecker
         );
 
         $docker_command = $this->dockerBuilder->getDockerCommand();
-        $docker_command = $docker_command->toString();
-        exec($docker_command, $result);
-        $this->filesystem->remove($this->full_file_name);
+        return $docker_command->toString();
+    }
 
-        if (empty($result)) {
-            return new CourseResponse('Task done', serialize($result), CourseResponse::SUCCESS);
-        } else {
-            return new CourseResponse('Task failed', serialize($result), CourseResponse::ERROR);
-        }
+    protected function getSystemCommand(string $container_type): string
+    {
+        return $container_type . ' ' . $this->full_file_name;
     }
 }
